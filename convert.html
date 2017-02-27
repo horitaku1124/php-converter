@@ -22,19 +22,16 @@
             }
             if(char === '\'' || char === '"' || char === '`') {
                 if(verse.length > 0) {
-                    // wordArray.push(new CodeVal(verse));
                     wordArray.push(verse);
                 }
                 verse = char;
                 quote = char;
             } else if(allClears.includes(char)) {
                 if(verse.length > 0) {
-                    // wordArray.push(new CodeVal(verse));
                     wordArray.push(verse);
                 }
                 if(cr_lf.includes(char) || singleOperator.includes(char)) {
                     // wordArray.push(new CodeVal(char));
-                    // wordArray.push(char);
                 }
                 wordArray.push(char);
                 verse = "";
@@ -46,20 +43,38 @@
     }
     function parsePhpCodes(wordArray) {
         let inPhpCode = false;
+        let phpCodeArray = [];
         for(let i = 0;i < wordArray.length;i++) {
-            let word = wordArray[i];
-            console.log(word);
+            let code, word = wordArray[i];
+            if(inPhpCode) {
+                if(word == "?" && wordArray[i + 1] == ">") {
+                    inPhpCode = false;
+                    code = new CodeVal(word + wordArray[i + 1]);
+                    i += 1;
+                } else {
+                    code = new CodeVal(word);
+                }
+            } else {
+                if(word == "<" && wordArray[i + 1] == "?" && wordArray[i + 2] == "php") {
+                    inPhpCode = true;
+                    code = new CodeVal(word + wordArray[i + 1] + wordArray[i + 2]);
+                    i += 2;
+                } else {
+                    code = new CodeVal(word);
+                }
+            }
+            phpCodeArray.push(code);
         }
+        return phpCodeArray;
     }
     function convert() {
         let code = document.getElementById('input').value;
         let wordArray = extractWords(code);
-
+        let phpCodeArray = parsePhpCodes(wordArray);
         let distCode = "";
-        for (let i = 0;i < wordArray.length;i++) {
-            // console.log(wordArray[i].toString());
-            // distCode += wordArray[i].value;
-            distCode += wordArray[i];
+        for (let i = 0;i < phpCodeArray.length;i++) {
+            console.log(phpCodeArray[i].toString());
+            distCode += phpCodeArray[i].value;
         }
         document.getElementById('output').value = distCode;
     }
