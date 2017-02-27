@@ -4,9 +4,11 @@
 <title>Converter</title>
 <script src="js/code_val.js"></script>
 <script type="text/javascript">
-    function convert() {
-        let code = document.getElementById('input').value;
-        let quote = null, verse = "", valArray = [];
+    const spaces = " \t", cr_lf = "\r\n";
+    const singleOperator = "()+-.*/=;,><?";
+    const allClears = singleOperator + spaces + cr_lf;
+    function extractWords(code) {
+        let quote = null, verse = "", wordArray = [];
         for(let i = 0;i < code.length;i++) {
             const char = code[i];
             if(quote != null) {
@@ -20,35 +22,46 @@
             }
             if(char === '\'' || char === '"' || char === '`') {
                 if(verse.length > 0) {
-                    valArray.push(new CodeVal(verse));
+                    // wordArray.push(new CodeVal(verse));
+                    wordArray.push(verse);
                 }
                 verse = char;
                 quote = char;
-            } else if(char === ' ') {
+            } else if(allClears.includes(char)) {
                 if(verse.length > 0) {
-                    valArray.push(new CodeVal(verse));
+                    // wordArray.push(new CodeVal(verse));
+                    wordArray.push(verse);
                 }
-                valArray.push(new CodeVal(char));
-                verse = "";
-            } else if(char === '\t' || char === '\r' || char === '\n') {
-                if(verse.length > 0) {
-                    valArray.push(new CodeVal(verse));
+                if(cr_lf.includes(char) || singleOperator.includes(char)) {
+                    // wordArray.push(new CodeVal(char));
+                    // wordArray.push(char);
                 }
-                valArray.push(new CodeVal(char));
-                verse = "";
-            } else if(char === ';' || char === ',' || char === '(' || char === ')') {
-                if(verse.length > 0) {
-                    valArray.push(new CodeVal(verse));
-                }
-                valArray.push(new CodeVal(char));
+                wordArray.push(char);
                 verse = "";
             } else {
                 verse += char;
             }
         }
-        for (let i = 0;i < valArray.length;i++) {
-            console.log(valArray[i].toString());
+        return wordArray;
+    }
+    function parsePhpCodes(wordArray) {
+        let inPhpCode = false;
+        for(let i = 0;i < wordArray.length;i++) {
+            let word = wordArray[i];
+            console.log(word);
         }
+    }
+    function convert() {
+        let code = document.getElementById('input').value;
+        let wordArray = extractWords(code);
+
+        let distCode = "";
+        for (let i = 0;i < wordArray.length;i++) {
+            // console.log(wordArray[i].toString());
+            // distCode += wordArray[i].value;
+            distCode += wordArray[i];
+        }
+        document.getElementById('output').value = distCode;
     }
 </script>
 </head>
@@ -60,10 +73,16 @@ class TestClass1 {
     function add() {
         return $this->val + 97;
     }
+    function minus() {
+        return $this->val-85;
+    }
 }
 $a =&amp; new TestClass1();
 echo $a->val.PHP_EOL;
-echo $a->add().PHP_EOL;</textarea>
+echo $a->add().PHP_EOL;
+echo $a->minus().PHP_EOL;
+?&gt;
+</textarea>
 <input type="button" value="Convert" onclick="convert()">
 <textarea id="output" style="width: 500px;height: 400px;"></textarea>
 </body>
