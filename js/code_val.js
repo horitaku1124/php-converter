@@ -9,7 +9,7 @@ class CodeVal {
             this.type = "Text";
         }
     }
-    toString() {
+    get to_s() {
         if(this.type == "System") {
             return this.type + ":" + this.value.replace(/\n/, "\\n").replace(/\r/, "\\r").replace(/\t/, "\\t") + "\n";
         }

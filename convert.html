@@ -13,6 +13,9 @@
             const char = code[i];
             if(quote != null) {
                 if(char == quote) {
+                    if(verse.length > 0) {
+                        wordArray.push(verse);
+                    }
                     quote = null;
                     verse = "";
                 } else {
@@ -73,7 +76,7 @@
         let phpCodeArray = parsePhpCodes(wordArray);
         let distCode = "";
         for (let i = 0;i < phpCodeArray.length;i++) {
-            console.log(phpCodeArray[i].toString());
+            console.log(phpCodeArray[i].to_s);
             distCode += phpCodeArray[i].value;
         }
         document.getElementById('output').value = distCode;
@@ -84,6 +87,7 @@
 <textarea id="input" style="width: 500px;height: 400px;">&lt;?php
 class TestClass1 {
     var $val = 100;
+    var $text = "abcdefg";
 
     function add() {
         return $this->val + 97;
@@ -91,11 +95,19 @@ class TestClass1 {
     function minus() {
         return $this->val-85;
     }
+    function &amp;my() {
+        return $this;
+    }
+    function text() {
+        return $this->text;
+    }
 }
 $a =&amp; new TestClass1();
 echo $a->val.PHP_EOL;
 echo $a->add().PHP_EOL;
 echo $a->minus().PHP_EOL;
+echo $a->my().PHP_EOL;
+echo $a->text().PHP_EOL;
 ?&gt;
 </textarea>
 <input type="button" value="Convert" onclick="convert()">
