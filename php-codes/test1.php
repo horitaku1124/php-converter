@@ -1,7 +1,12 @@
 <?php
+/**
+ * 古いくらす
+ */
 class TestClass1 {
     var $val = 100;
     var $text = "abcdefg";
+    var $text2 = "ABC
+DEFG";
 
     function add() {
         return $this->val + 97;
@@ -22,3 +27,4 @@ echo $a->add().PHP_EOL;
 echo $a->minus().PHP_EOL;
 echo $a->my().PHP_EOL;
 echo $a->text().PHP_EOL;
+?>

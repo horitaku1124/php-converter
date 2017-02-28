@@ -13,6 +13,7 @@
             const char = code[i];
             if(quote != null) {
                 if(char == quote) {
+                    verse += quote;
                     if(verse.length > 0) {
                         wordArray.push(verse);
                     }
@@ -47,26 +48,34 @@
     function parsePhpCodes(wordArray) {
         let inPhpCode = false;
         let phpCodeArray = [];
+        let line = 1, chars = 0;
         for(let i = 0;i < wordArray.length;i++) {
             let code, word = wordArray[i];
             if(inPhpCode) {
                 if(word == "?" && wordArray[i + 1] == ">") {
                     inPhpCode = false;
-                    code = new CodeVal(word + wordArray[i + 1]);
+                    code = new CodeVal(word + wordArray[i + 1], line, chars);
                     i += 1;
                 } else {
-                    code = new CodeVal(word);
+                    code = new CodeVal(word, line, chars);
                 }
             } else {
                 if(word == "<" && wordArray[i + 1] == "?" && wordArray[i + 2] == "php") {
                     inPhpCode = true;
-                    code = new CodeVal(word + wordArray[i + 1] + wordArray[i + 2]);
+                    code = new CodeVal(word + wordArray[i + 1] + wordArray[i + 2], line, chars);
                     i += 2;
                 } else {
-                    code = new CodeVal(word);
+                    code = new CodeVal(word, line, chars);
                 }
             }
             phpCodeArray.push(code);
+
+            if(word == "\n") {
+                line += 1;
+                chars = 0;
+            } else {
+                chars += word.length;
+            }
         }
         return phpCodeArray;
     }
@@ -85,9 +94,14 @@
 </head>
 <body>
 <textarea id="input" style="width: 500px;height: 400px;">&lt;?php
+/**
+ * 古いくらす
+ */
 class TestClass1 {
     var $val = 100;
     var $text = "abcdefg";
+    var $text2 = "ABC
+DEFG";
 
     function add() {
         return $this->val + 97;

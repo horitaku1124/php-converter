@@ -1,5 +1,5 @@
 class CodeVal {
-    constructor(value) {
+    constructor(value, line, chars) {
         this.value = value;
         if(value == "\r" || value == "\n" || value == "\t") {
             this.type = "System";
@@ -8,6 +8,8 @@ class CodeVal {
         } else {
             this.type = "Text";
         }
+        this.line = line;
+        this.chars = chars;
     }
     get to_s() {
         if(this.type == "System") {
@@ -16,7 +18,7 @@ class CodeVal {
         if(this.type == "Space") {
             return "Space:";
         }
-        return this.type + ":" + this.value + "\n";
+        return this.type + "(" + this.line + "," + this.chars + ")" + ":" + this.value  + "\n";
     }
     valueOf() {
         return "A:" + this.value + "\n";
