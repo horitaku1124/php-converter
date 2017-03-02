@@ -49,26 +49,28 @@
         let inPhpCode = false;
         let phpCodeArray = [];
         let line = 1, chars = 0;
+        const appendCode = (word) => {
+            phpCodeArray.push(new CodeVal(word, line, chars));
+        };
         for(let i = 0;i < wordArray.length;i++) {
-            let code, word = wordArray[i];
+            let word = wordArray[i];
             if(inPhpCode) {
                 if(word == "?" && wordArray[i + 1] == ">") {
                     inPhpCode = false;
-                    code = new CodeVal(word + wordArray[i + 1], line, chars);
+                    appendCode(word + wordArray[i + 1]);
                     i += 1;
                 } else {
-                    code = new CodeVal(word, line, chars);
+                    appendCode(word);
                 }
             } else {
                 if(word == "<" && wordArray[i + 1] == "?" && wordArray[i + 2] == "php") {
                     inPhpCode = true;
-                    code = new CodeVal(word + wordArray[i + 1] + wordArray[i + 2], line, chars);
+                    appendCode(word + wordArray[i + 1] + wordArray[i + 2]);
                     i += 2;
                 } else {
-                    code = new CodeVal(word, line, chars);
+                    appendCode(word);
                 }
             }
-            phpCodeArray.push(code);
 
             if(word == "\n") {
                 line += 1;
