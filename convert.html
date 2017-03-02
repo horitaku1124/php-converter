@@ -60,6 +60,8 @@
                         phpCodeArray[phpCodeArray.length - 2].value == "function") {
                         continue;
                     }
+                } else if(word == "var") {
+                    appendCode("private");
                 } else if(word == " ") {
                     for(let j = i + 1;j < wordArray.length;j++) {
                         let word2 = wordArray[j];

@@ -5,6 +5,8 @@ class CodeVal {
             this.type = "System";
         } else if(value.match(/^ +$/)) {
             this.type = "Space";
+        } else if(value.match(/\$[a-zA-Z0-9\_]/)) {
+            this.type = "Variable";
         } else {
             this.type = "Text";
         }
