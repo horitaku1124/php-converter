@@ -3,7 +3,7 @@ class CodeVal {
         this.value = value;
         if(value == "\r" || value == "\n" || value == "\t") {
             this.type = "System";
-        } else if(value == " ") {
+        } else if(value.match(/^ +$/)) {
             this.type = "Space";
         } else {
             this.type = "Text";
@@ -16,7 +16,7 @@ class CodeVal {
             return this.type + ":" + this.value.replace(/\n/, "\\n").replace(/\r/, "\\r").replace(/\t/, "\\t") + "\n";
         }
         if(this.type == "Space") {
-            return "Space:";
+            return "Space:" + "(" + this.line + "," + this.chars + ") * " + this.value.length;
         }
         return this.type + "(" + this.line + "," + this.chars + ")" + ":" + this.value  + "\n";
     }
