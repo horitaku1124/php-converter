@@ -8,10 +8,33 @@
     const singleOperator = "()+-.*/=;,><?&";
     const allClears = singleOperator + spaces + cr_lf;
     function lexicalAnalyzer(source) {
-        let quote = null, verse = "", tokens = [];
+        let quote = null, verse = "", tokens = [], inLineComment = false, inMultiLineComment = false;
         for(let i = 0;i < source.length;i++) {
             const char = source[i];
-            if(quote != null) {
+
+            if(inLineComment) {
+                if(char == "\n") {
+                    inLineComment = false;
+                    tokens.push(verse);
+                    tokens.push("\n");
+                    verse = "";
+                } else {
+                    verse += char;
+                }
+                continue;
+            } else if(inMultiLineComment) {
+                verse += char;
+                if(char == "*" && source[i + 1] == "/") {
+                    verse += "/";
+                    inMultiLineComment = false;
+                    if(verse.length > 0) {
+                        tokens.push(verse);
+                    }
+                    verse = "";
+                    i++;
+                }
+                continue;
+            } else if(quote != null) {
                 if(char == quote) {
                     verse += quote;
                     if(verse.length > 0) {
@@ -30,6 +53,21 @@
                 }
                 verse = char;
                 quote = char;
+            } else if(char == '/') {
+                let nextChar = source[++i];
+                if(nextChar == '/'){
+                    inLineComment = true;
+                } else if(nextChar == '*'){
+                    inMultiLineComment = true;
+                } else {
+                    verse += char;
+                    continue;
+                }
+
+                if(verse.length > 0) {
+                    tokens.push(verse);
+                }
+                verse = char + nextChar;
             } else if(allClears.includes(char)) {
                 if(verse.length > 0) {
                     tokens.push(verse);
@@ -134,6 +172,7 @@ class TestClass1 {
 DEFG";
 
     function add() {
+        // TODO １行コメント
         return $this->val + 97;
     }
     function minus() {
