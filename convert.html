@@ -103,9 +103,16 @@
             let token = tokens[i], nextWord = tokens[i + 1], next2Word = tokens[i + 2];
             if(inPhpCode) {
                 if(token == "&") {
-                    if(phpCodeArray[phpCodeArray.length - 1].type == "Space" &&
-                        phpCodeArray[phpCodeArray.length - 2].value == "function") {
+                    let lastToken = phpCodeArray[phpCodeArray.length - 1];
+                    let last2Token = phpCodeArray[phpCodeArray.length - 2];
+                    if(lastToken.type == "Space" &&
+                        last2Token.value == "function") {
                         continue;
+                    } else if(nextWord == "&") {
+                        i++;
+                        appendCode("&&");
+                    } else {
+                        appendCode(token);
                     }
                 } else if(token == "var") {
                     appendCode("private");
@@ -185,6 +192,9 @@ DEFG";
     function add() {
         // TODO １行コメント
         return $this->val + 97;
+    }
+    function and() {
+        return (3 &amp; 1) &amp;&amp; 2;
     }
     function minus() {
         return $this->val-85;
