@@ -26,3 +26,4 @@ class CodeVal {
         return "A:" + this.value + "\n";
     }
 }
+module.exports = CodeVal;
