@@ -3,3 +3,9 @@
 ```
 node convert.js foo.php ; => dist/foo.php
 ```
+
+Batch Job
+```
+find ./php_project -name "*.php" | xargs -IFILE node convert.js FILE
+```
+

@@ -24,11 +24,11 @@ if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
 for(let i = 0;i < filePaths.length;i++) {
-    dir += filePaths[i];
+    dir += filePaths[i] + "/";
 
     if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
     }
 }
 
-fs.writeFileSync(dir + "/" + fileName, distCode);
+fs.writeFileSync(dir + fileName, distCode);
