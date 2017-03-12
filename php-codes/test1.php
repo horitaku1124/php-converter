@@ -42,4 +42,5 @@ echo $a->text().PHP_EOL;
 echo $a->text2().PHP_EOL;
 echo $a->text3().PHP_EOL;
 echo $a->text4().PHP_EOL;
+print_r(split("/", "/usr/local/lib"));
 ?>
