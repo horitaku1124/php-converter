@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Converter</title>
-<script src="js/code_val.js"></script>
+<script src="js/code_val2.js"></script>
 <script type="text/javascript">
     const spaces = " \t", cr_lf = "\r\n";
     const singleOperator = "()+-.*/=;,><?&!|[]";
@@ -150,7 +150,7 @@
                     }
                 }
             } else {
-                if(token == "<" && nextWord == "?" && next2Word == "php") {
+                if(token == "<" && nextWord == "?" && (next2Word == "php" || next2Word == "PHP")) {
                     inPhpCode = true;
                     appendCode("<?php");
                     i += 2;
