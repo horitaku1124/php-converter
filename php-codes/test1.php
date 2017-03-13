@@ -10,6 +10,9 @@ DEFG";
     var $text3 = "<html><body bgcolor=\"white;\"></html>";
     var $text4 = '<html><body bgcolor=\'white;\'></html>';
 
+    function val() {
+        return $this->val;
+    }
     function add() {
         // TODO １行コメント
         return $this->val + 97;
@@ -40,7 +43,7 @@ DEFG";
     }
 }
 $a =& new TestClass1();
-echo $a->val.PHP_EOL;
+echo $a->val().PHP_EOL;
 echo $a->add().PHP_EOL;
 echo $a->minus().PHP_EOL;
 echo $a->my().PHP_EOL;

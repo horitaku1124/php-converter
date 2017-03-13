@@ -48,7 +48,20 @@ phpParser.run = function(tokens){
                 appendCode(token + tokens[i + 1]);
                 i += 1;
             } else {
-                appendCode(token);
+                if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
+                    if(token.match(/split/i)) {
+                        appendFunction("preg_split");
+                        appendFunction(nextWord);
+                        let code = next2Word.replace(/\//g, "\\/");                      
+                        code = code.charAt(0) + "/" + code.substring(1, code.length - 1) + "/" + code.substring(code.length - 1);
+                        appendFunction(code);
+                        i += 2;
+                    } else {
+                        appendFunction(token);
+                    }
+                } else {
+                    appendCode(token);
+                }
             }
         } else {
             if(token == "<" && nextWord == "?" && next2Word == "php") {
