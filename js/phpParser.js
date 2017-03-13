@@ -9,6 +9,11 @@ phpParser.run = function(tokens){
     const appendCode = (token) => {
         phpCodeArray.push(new CodeVal(token, line, chars));
     };
+    const appendFunction = (token) => {
+        let code = new CodeVal(token, line, chars);
+        code.type = "FunctionCall";
+        phpCodeArray.push(code);
+    };
     for(let i = 0;i < tokens.length;i++) {
         let token = tokens[i], nextWord = tokens[i + 1], next2Word = tokens[i + 2];
         if(inPhpCode) {
@@ -21,6 +26,9 @@ phpParser.run = function(tokens){
                 } else if(nextWord == "&") {
                     i++;
                     appendCode("&&");
+                } else if(nextWord.match(/\$[a-zA-Z0-9\_]/)) {
+                    i++;
+                    appendCode(nextWord);
                 } else {
                     appendCode(token);
                 }
@@ -64,7 +72,7 @@ phpParser.run = function(tokens){
                 }
             }
         } else {
-            if(token == "<" && nextWord == "?" && next2Word == "php") {
+            if(token == "<" && nextWord == "?" && (next2Word == "php" || next2Word == "PHP")) {
                 inPhpCode = true;
                 appendCode("<?php");
                 i += 2;

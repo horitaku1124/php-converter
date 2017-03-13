@@ -24,6 +24,9 @@ if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
 }
 for(let i = 0;i < filePaths.length;i++) {
+    let path = filePaths[i];
+    if(!path)continue;
+    if(path.match(/^[A-Z]:$/))continue;
     dir += filePaths[i] + "/";
 
     if (!fs.existsSync(dir)) {
@@ -32,3 +35,4 @@ for(let i = 0;i < filePaths.length;i++) {
 }
 
 fs.writeFileSync(dir + fileName, distCode);
+console.log(dir + fileName);
