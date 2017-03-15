@@ -170,6 +170,24 @@
                         }
                     } else {
                         appendCode(token);
+                        if(token.length > 4) {
+                            // console.log(token[0], token[1], token[token.length - 1], token[token.length - 2]);
+                            if(
+                                (token[0] == "/" && token[1] == "*" && token[token.length - 1] == "/" && token[token.length - 2] == "*")
+                                ||
+                                (token[0] == "\"" && token[token.length - 1] == "\"")
+                                ||
+                                (token[0] == "'" && token[token.length - 1] == "'")
+                                ) {
+                                let count = 0;
+                                for(let charIndex = 0;charIndex < token.length;charIndex++) {
+                                    if(token[charIndex] == "\n") {
+                                        count++;
+                                    }
+                                }
+                                line += count;
+                            }
+                        }
                     }
                 }
             } else {
@@ -197,11 +215,15 @@
     }
     function convert() {
         let source = document.getElementById('input').value;
+        let printAllTokens = document.getElementById('print_all_tokens').checked;
         let tokens = lexicalAnalyzer(source);
         let phpCodeArray = parsePhpCodes(tokens);
         let distCode = "";
+
         for (let i = 0;i < phpCodeArray.length;i++) {
-            console.log(phpCodeArray[i].to_s);
+            if(printAllTokens) {
+                console.log(phpCodeArray[i].to_s);
+            }
             distCode += phpCodeArray[i].value;
         }
         document.getElementById('output').value = distCode;
@@ -274,5 +296,11 @@ print_r($a->split("/usr/local/lib"));
 </textarea>
 <input type="button" value="Convert" onclick="convert()">
 <textarea id="output" style="width: 500px;height: 400px;"></textarea>
+<div>
+    <label>
+        <input type="checkbox" id="print_all_tokens" name="print_all_tokens" checked="checked" />
+        全てlogs出力    
+    </label>
+</div>
 </body>
 </html>
