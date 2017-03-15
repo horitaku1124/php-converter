@@ -41,6 +41,9 @@ DEFG";
     function text4() {
         return $this->text4;
     }
+    function split($text) {
+        return Split("/", $text);
+    }
 }
 $a =& new TestClass1();
 echo $a->val().PHP_EOL;
@@ -55,4 +58,5 @@ echo $a->text2().PHP_EOL;
 echo $a->text3().PHP_EOL;
 echo $a->text4().PHP_EOL;
 print_r(split("/", "/usr/local/lib"));
+print_r($a->split("/usr/local/lib"));
 ?>

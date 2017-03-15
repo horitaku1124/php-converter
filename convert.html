@@ -141,10 +141,21 @@
                 } else if(token == "-" && nextWord == ">") {
                     appendCode("->");
                     i += 1;
+                    if(next2Word && next2Word.match(/^[a-zA-Z\_0-9]+$/)) {
+                        appendCode(next2Word);
+                        i += 1;
+                    }
                 } else if(token == "?" && tokens[i + 1] == ">") {
                     inPhpCode = false;
                     appendCode(token + tokens[i + 1]);
                     i += 1;
+                } else if(token.match(/^function$/i)) {
+                    appendCode(token);
+                    if(nextWord.match(/^ +$/) && next2Word.match(/^[a-zA-Z\_0-9]+$/)) {
+                        appendCode(nextWord);
+                        appendCode(next2Word);
+                        i += 2;
+                    }
                 } else {
                     if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
                         if(token.match(/split/i)) {
@@ -241,6 +252,9 @@ DEFG";
     function text4() {
         return $this->text4;
     }
+    function split($text) {
+        return Split("/", $text);
+    }
 }
 $a =&amp; new TestClass1();
 echo $a->val().PHP_EOL;
@@ -255,6 +269,7 @@ echo $a->text2().PHP_EOL;
 echo $a->text3().PHP_EOL;
 echo $a->text4().PHP_EOL;
 print_r(split("/", "/usr/local/lib"));
+print_r($a->split("/usr/local/lib"));
 ?&gt;
 </textarea>
 <input type="button" value="Convert" onclick="convert()">
