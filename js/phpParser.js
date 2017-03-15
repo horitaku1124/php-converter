@@ -51,10 +51,21 @@ phpParser.run = function(tokens){
             } else if(token == "-" && nextWord == ">") {
                 appendCode("->");
                 i += 1;
+                if(next2Word && next2Word.match(/^[a-zA-Z\_0-9]+$/)) {
+                    appendCode(next2Word);
+                    i += 1;
+                }
             } else if(token == "?" && tokens[i + 1] == ">") {
                 inPhpCode = false;
                 appendCode(token + tokens[i + 1]);
                 i += 1;
+            } else if(token.match(/^function$/i)) {
+                appendCode(token);
+                if(nextWord.match(/^ +$/) && next2Word.match(/^[a-zA-Z\_0-9]+$/)) {
+                    appendCode(nextWord);
+                    appendCode(next2Word);
+                    i += 2;
+                }
             } else {
                 if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
                     if(token.match(/split/i)) {
@@ -64,11 +75,30 @@ phpParser.run = function(tokens){
                         code = code.charAt(0) + "/" + code.substring(1, code.length - 1) + "/" + code.substring(code.length - 1);
                         appendFunction(code);
                         i += 2;
+                        console.log(" Split(" + line + " , " + chars + ")");
                     } else {
                         appendFunction(token);
                     }
                 } else {
                     appendCode(token);
+                    if(token.length > 4) {
+                        // console.log(token[0], token[1], token[token.length - 1], token[token.length - 2]);
+                        if(
+                            (token[0] == "/" && token[1] == "*" && token[token.length - 1] == "/" && token[token.length - 2] == "*")
+                            ||
+                            (token[0] == "\"" && token[token.length - 1] == "\"")
+                            ||
+                            (token[0] == "'" && token[token.length - 1] == "'")
+                            ) {
+                            let count = 0;
+                            for(let charIndex = 0;charIndex < token.length;charIndex++) {
+                                if(token[charIndex] == "\n") {
+                                    count++;
+                                }
+                            }
+                            line += count;
+                        }
+                    }
                 }
             }
         } else {
