@@ -35,7 +35,7 @@ phpParser.run = function(tokens){
             } else if(token == "var") {
                 appendCode("private");
             } else if(token == "@") {
-                // Nothing to do
+                console.log(" @(" + line + ", " + chars + ")");
             } else if(token == " ") {
                 for(let j = i + 1;j < tokens.length;j++) {
                     let word2 = tokens[j];
@@ -71,13 +71,24 @@ phpParser.run = function(tokens){
             } else {
                 if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
                     if(token.match(/split/i)) {
-                        appendFunction("preg_split");
-                        appendFunction(nextWord);
-                        let code = next2Word.replace(/\//g, "\\/");                      
-                        code = code.charAt(0) + "/" + code.substring(1, code.length - 1) + "/" + code.substring(code.length - 1);
-                        appendFunction(code);
+                        next2Word = next2Word.replace(/^["']/, "").replace(/["']$/, "");
+                        if(next2Word.length == 1 ||
+                             (next2Word.length == 2 && (next2Word == "\\n" || next2Word == "\\t"))) {
+                            token = "explode"
+                            next2Word = "\"" + next2Word + "\"";
+                        } else {
+                            token = "preg_split";
+                            next2Word = next2Word.replace(/\//g, "\\/");  
+                            next2Word = "'/" + next2Word + "/'";
+                        }
+                        appendFunction(token);
+                        appendCode(nextWord);
+                        // let code = next2Word.replace(/\//g, "\\/");                      
+                        // code = code.charAt(0) + "/" + code.substring(1, code.length - 1) + "/" + code.substring(code.length - 1);
+                        // appendCode(code);
+                        appendCode(next2Word);
                         i += 2;
-                        console.log(" Split(" + line + " , " + chars + ")");
+                        console.log(" Split -> " + token + "(" + line + ", " + chars + ")");
                     } else {
                         appendFunction(token);
                     }

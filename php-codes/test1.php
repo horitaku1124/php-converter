@@ -24,7 +24,7 @@ DEFG";
         return $this->val-85;
     }
     function &my() {
-        return $this;
+        return get_class($this);
     }
     function &my2(&$arr, &$arr2) {
         return count($arr) + count($arr2);
@@ -44,7 +44,11 @@ DEFG";
     function split($text) {
         return Split("/", $text);
     }
+    function split2($text) {
+        return Split("[ -/]", $text);
+    }
 }
+@include_once "nothing.php";
 $a =& new TestClass1();
 echo $a->val().PHP_EOL;
 echo $a->add().PHP_EOL;
@@ -59,4 +63,6 @@ echo $a->text3().PHP_EOL;
 echo $a->text4().PHP_EOL;
 print_r(split("/", "/usr/local/lib"));
 print_r($a->split("/usr/local/lib"));
+print_r($a->split2("2017/3/1 2017-4-1"));
+echo (1*2/(3+4)/1500).PHP_EOL;
 ?>
