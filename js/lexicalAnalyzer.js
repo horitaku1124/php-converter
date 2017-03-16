@@ -2,7 +2,7 @@ let lexicalAnalyzer = {};
 
 lexicalAnalyzer.run = function(source){
     const spaces = " \t", cr_lf = "\r\n";
-    const singleOperator = "()+-.*/=;,><?&!|[]";
+    const singleOperator = "()+-.*/=;,><?&!|[]@";
     const allClears = singleOperator + spaces + cr_lf;
     let quote = null, verse = "", tokens = [], inLineComment = false, inMultiLineComment = false;
     for(let i = 0;i < source.length;i++) {
@@ -62,14 +62,21 @@ lexicalAnalyzer.run = function(source){
             } else if(nextChar == '*'){
                 inMultiLineComment = true;
             } else {
-                verse += char;
-                continue;
+                // Divide operator
+                if(verse.length > 0) {
+                    tokens.push(verse);
+                }
+                tokens.push(char);
+                verse = "";
+                i--;
             }
 
             if(verse.length > 0) {
                 tokens.push(verse);
             }
-            verse = char + nextChar;
+            if(inLineComment || inMultiLineComment) {
+                verse = char + nextChar;                    
+            }
         } else if(allClears.includes(char)) {
             if(verse.length > 0) {
                 tokens.push(verse);

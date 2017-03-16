@@ -34,6 +34,8 @@ phpParser.run = function(tokens){
                 }
             } else if(token == "var") {
                 appendCode("private");
+            } else if(token == "@") {
+                // Nothing to do
             } else if(token == " ") {
                 for(let j = i + 1;j < tokens.length;j++) {
                     let word2 = tokens[j];
