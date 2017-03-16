@@ -66,14 +66,21 @@
                 } else if(nextChar == '*'){
                     inMultiLineComment = true;
                 } else {
-                    verse += char;
-                    continue;
+                    // Divide operator
+                    if(verse.length > 0) {
+                        tokens.push(verse);
+                    }
+                    tokens.push(char);
+                    verse = "";
+                    i--;
                 }
 
                 if(verse.length > 0) {
                     tokens.push(verse);
                 }
-                verse = char + nextChar;
+                if(inLineComment || inMultiLineComment) {
+                    verse = char + nextChar;                    
+                }
             } else if(allClears.includes(char)) {
                 if(verse.length > 0) {
                     tokens.push(verse);
@@ -296,6 +303,7 @@ echo $a->text3().PHP_EOL;
 echo $a->text4().PHP_EOL;
 print_r(split("/", "/usr/local/lib"));
 print_r($a->split("/usr/local/lib"));
+echo (1*2/(3+4)/1500).PHP_EOL;
 ?&gt;
 </textarea>
 <input type="button" value="Convert" onclick="convert()">
