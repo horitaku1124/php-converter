@@ -10,13 +10,7 @@ let contents = fs.readFileSync(readFilePath).toString();
 let filePaths = readFilePath.split("/");
 let fileName = filePaths.pop();
 
-let tokens = la.run(contents);
-let codes = pp.run(tokens);
 
-let distCode = "";
-for (let i = 0;i < codes.length;i++) {
-    distCode += codes[i].value;
-}
 
 let dir = "dist/";
 
@@ -33,6 +27,14 @@ for(let i = 0;i < filePaths.length;i++) {
         fs.mkdirSync(dir);
     }
 }
+console.log(dir + fileName);
+
+let tokens = la.run(contents);
+let codes = pp.run(tokens);
+
+let distCode = "";
+for (let i = 0;i < codes.length;i++) {
+    distCode += codes[i].value;
+}
 
 fs.writeFileSync(dir + fileName, distCode);
-console.log(dir + fileName);
