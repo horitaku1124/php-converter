@@ -20,6 +20,7 @@ if (!fs.existsSync(dir)) {
 for(let i = 0;i < filePaths.length;i++) {
     let path = filePaths[i];
     if(!path)continue;
+    if(path == ".")continue;
     if(path.match(/^[A-Z]:$/))continue;
     dir += filePaths[i] + "/";
 
