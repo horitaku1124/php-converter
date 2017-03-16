@@ -70,7 +70,7 @@ phpParser.run = function(tokens){
                 }
             } else {
                 if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
-                    if(token.match(/split/i)) {
+                    if(token.match(/^split$/i)) {
                         next2Word = next2Word.replace(/^["']/, "").replace(/["']$/, "");
                         if(next2Word.length == 1 ||
                              (next2Word.length == 2 && (next2Word == "\\n" || next2Word == "\\t"))) {
