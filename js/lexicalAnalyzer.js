@@ -39,10 +39,15 @@ lexicalAnalyzer.run = function(source){
                 quote = null;
                 verse = "";
             } else if(char == "\\") {
+                let escapeTarget = source[i + 1];
                 verse += char;
-                if(source[i + 1] == quote) {
+                if(escapeTarget == quote) {
                     verse += quote;
                     i++;
+                } else if("nt\\".includes(escapeTarget)) {
+                    verse += escapeTarget;
+                    i++;
+                }
                 }
             } else {
                 verse += char;
