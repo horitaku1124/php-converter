@@ -48,7 +48,6 @@ lexicalAnalyzer.run = function(source){
                     verse += escapeTarget;
                     i++;
                 }
-                }
             } else {
                 verse += char;
             }
