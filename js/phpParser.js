@@ -68,7 +68,7 @@ phpParser.run = function(tokens){
                     appendCode(next2Word);
                     i += 2;
                 }
-            } else if (/array/i.test(token)) {
+            } else if (/^array$/i.test(token)) {
                 if (nextWord === "(" && next2Word === ")") {
                     appendCode("[]");
                     i += 2;
@@ -127,7 +127,7 @@ phpParser.run = function(tokens){
                 inPhpCode = true;
                 appendCode("<?php");
                 i += 2;
-            } else if(token == "<" && nextWord == "?" && next2Word != "php") {
+            } else if(token == "<" && nextWord == "?" && next2Word != "php" && next2Word != "=") {
                 inPhpCode = true;
                 appendCode("<?php");
                 i += 1;
