@@ -1,6 +1,5 @@
 let CodeVal = require('./code_val.js');
 
-
 let phpParser = {};
 phpParser.run = function(tokens){
     let inPhpCode = false;
@@ -33,6 +32,7 @@ phpParser.run = function(tokens){
                     appendCode(token);
                 }
             } else if(token == "var") {
+                console.log(" var -> private (" + line + ", " + chars + ")");
                 appendCode("private");
             } else if(token == "@") {
                 console.log(" @(" + line + ", " + chars + ")");
