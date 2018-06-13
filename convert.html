@@ -5,6 +5,7 @@
 <title>Converter</title>
 <script src="js/code_val2.js"></script>
 <script type="text/javascript">
+    <!--
     const spaces = " \t", cr_lf = "\r\n";
     const singleOperator = "()+-.*/=;,><?&!|[]@";
     const allClears = singleOperator + spaces + cr_lf;
@@ -170,6 +171,14 @@
                         appendCode(next2Word);
                         i += 2;
                     }
+                } else if (/array/i.test(token)) {
+                    if (nextWord === "(" && next2Word === ")") {
+                        appendCode("[]");
+                        i += 2;
+                        console.log(" array -> [] (" + line + ", " + chars + ")");
+                    } else {
+                        appendCode(token);
+                    }
                 } else {
                     if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
                         if(token.match(/^split$/i)) {
@@ -254,6 +263,7 @@
         }
         document.getElementById('output').value = distCode;
     }
+    -->
 </script>
 </head>
 <body>
@@ -268,6 +278,7 @@ class TestClass1 {
 DEFG";
     var $text3 = "<html><body bgcolor=\"white;\"></html>";
     var $text4 = '<html><body bgcolor=\'white;\'></html>';
+    var $ary1 = array();
 
     function val() {
         return $this->val;

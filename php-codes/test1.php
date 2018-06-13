@@ -9,6 +9,7 @@ class TestClass1 {
 DEFG";
     var $text3 = "<html><body bgcolor=\"white;\"></html>";
     var $text4 = '<html><body bgcolor=\'white;\'></html>';
+    var $ary1 = array();
 
     function val() {
         return $this->val;

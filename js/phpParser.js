@@ -68,6 +68,14 @@ phpParser.run = function(tokens){
                     appendCode(next2Word);
                     i += 2;
                 }
+            } else if (/array/i.test(token)) {
+                if (nextWord === "(" && next2Word === ")") {
+                    appendCode("[]");
+                    i += 2;
+                    console.log(" array -> [] (" + line + ", " + chars + ")");
+                } else {
+                    appendCode(token);
+                }
             } else {
                 if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
                     if(token.match(/^split$/i)) {
