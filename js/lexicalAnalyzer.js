@@ -2,7 +2,7 @@ let lexicalAnalyzer = {};
 
 lexicalAnalyzer.run = function(source){
     const spaces = " \t", cr_lf = "\r\n";
-    const singleOperator = "()+-.*/=;,><?&!|[]@";
+    const singleOperator = "()+-.*/=;,><?&!|[]@{}";
     const allClears = singleOperator + spaces + cr_lf;
     let quote = null, verse = "", tokens = [], inLineComment = false, inMultiLineComment = false;
     for(let i = 0;i < source.length;i++) {

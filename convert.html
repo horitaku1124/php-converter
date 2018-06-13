@@ -7,7 +7,7 @@
 <script type="text/javascript">
     <!--
     const spaces = " \t", cr_lf = "\r\n";
-    const singleOperator = "()+-.*/=;,><?&!|[]@";
+    const singleOperator = "()+-.*/=;,><?&!|[]@{}";
     const allClears = singleOperator + spaces + cr_lf;
     function lexicalAnalyzer(source) {
         let quote = null, verse = "", tokens = [], inLineComment = false, inMultiLineComment = false;
