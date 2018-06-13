@@ -5,6 +5,7 @@ phpParser.run = function(tokens){
     let inPhpCode = false;
     let phpCodeArray = [];
     let line = 1, chars = 0;
+    let className = null;
     const appendCode = (token) => {
         phpCodeArray.push(new CodeVal(token, line, chars));
     };
@@ -62,11 +63,20 @@ phpParser.run = function(tokens){
                 appendCode(token + tokens[i + 1]);
                 i += 1;
             } else if(token.match(/^function$/i)) {
-                appendCode(token);
-                if(nextWord.match(/^ +$/) && next2Word.match(/^[a-zA-Z\_0-9]+$/)) {
+                if (className != null && next2Word === className) {
+                    console.log(" constructor to __construct (" + line + ", " + chars + ")");
+                    appendCode("public");
+                    appendCode(nextWord);
+                    appendCode("function");
+                    appendCode(" __construct");
+                    i += 2;
+                } else if(nextWord.match(/^ +$/) && next2Word.match(/^[a-zA-Z_0-9]+$/)) {
+                    appendCode(token);
                     appendCode(nextWord);
                     appendCode(next2Word);
                     i += 2;
+                } else {
+                    appendCode(token);
                 }
             } else if (/^array$/i.test(token)) {
                 if (nextWord === "(" && next2Word === ")") {
@@ -76,6 +86,12 @@ phpParser.run = function(tokens){
                 } else {
                     appendCode(token);
                 }
+            } else if (/^class/i.test(token) && /^[a-zA-Z_0-9]+$/.test(next2Word)) {
+                className = next2Word;
+                appendCode(token);
+                appendCode(nextWord);
+                appendCode(next2Word);
+                i += 2
             } else {
                 if(nextWord == "(" && token.match(/^[a-zA-Z\_0-9]+$/)) {
                     if(token.match(/^split$/i)) {

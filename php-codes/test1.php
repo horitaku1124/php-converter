@@ -11,6 +11,9 @@ DEFG";
     var $text4 = '<html><body bgcolor=\'white;\'></html>';
     var $ary1 = array();
 
+    function TestClass1() {
+    }
+
     function val() {
         return $this->val;
     }
