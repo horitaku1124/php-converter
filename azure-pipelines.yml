@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- eature/azure-pipeline-setup
+- master
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -16,6 +16,6 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    npm install
-    npm run build
+    npm install mocha
+    npm test
   displayName: 'npm install and build'

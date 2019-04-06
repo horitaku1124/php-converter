@@ -1,0 +1,22 @@
+{
+  "name": "php-converter",
+  "version": "1.0.0",
+  "description": "``` node convert.js foo.php ; => dist/foo.php ```",
+  "main": "convert.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/horitaku1124/php-converter.git"
+  },
+  "author": "Horimatsu Takuya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/horitaku1124/php-converter/issues"
+  },
+  "homepage": "https://github.com/horitaku1124/php-converter#readme",
+  "dependencies": {
+    "mocha": "^6.0.2"
+  }
+}
